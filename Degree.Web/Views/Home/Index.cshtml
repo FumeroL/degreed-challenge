@@ -6,10 +6,10 @@
         <div class="card border-dark">
             <h5 class="card-header">Random Joke</h5>
             <div class="card-body">
-                <div class="card-text" id="jokeContainer">Did you hear about the guy whose whole left side was cut off? He's all right now.</div>
+                <div class="card-text" id="jokeContainer"></div>
             </div>
             <div class="card-footer btn-group-toggle text-right">
-                <button type="button" class="btn btn-primary float-left">Other Joke</button>
+                <button type="button" id="btnOtherJoke" class="btn btn-primary float-left">Other Joke</button>
                 <div class="form-check float-right">
                     <input class="form-check-input" type="checkbox" id="chkAutoRefresh">
                     <label class="form-check-label" for="chkAutoRefresh">Refresh automatically</label>
@@ -24,65 +24,62 @@
                 <div class="input-group">
                     <input id="txtSearchTerm" type="text" class="form-control" placeholder="Search term">
                     <div class="input-group-append">
-                        <button id="btnSearch" type="button" class="btn btn-primary">Search</button>
+                        <button id="btnSearch" type="button" class="btn btn-primary">
+                            <span class="spinner-border spinner-border-sm invisible" role="status" aria-hidden="true"></span>
+                            <span class="">Search</span>
+                        </button>
                     </div>
                 </div>
                 <div class="accordion mt-2 invisible" id="divResults">
-                    <div class="card">
-                        <div class="card-header" id="headingShort">
-                            <h2 class="mb-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseShort" aria-expanded="false" aria-controls="collapseShort">
-                                    Short Jokes  <span class="badge badge-info">4</span>
-                                </button>
-                            </h2>
-                        </div>
-                        <div id="collapseShort" class="collapse" aria-labelledby="headingShort" data-parent="#divResults">
-                            <ul class="list-group">
-                                <li class="list-group-item">Cras justo odio</li>
-                                <li class="list-group-item">Dapibus ac facilisis in</li>
-                                <li class="list-group-item">Morbi leo risus</li>
-                                <li class="list-group-item">Porta ac consectetur ac</li>
-                                <li class="list-group-item">Vestibulum at eros</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header" id="headingMedium">
-                            <h2 class="mb-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseMedium" aria-expanded="false" aria-controls="collapseMedium">
-                                    Medium Jokes  <span class="badge badge-info">4</span>
-                                </button>
-                            </h2>
-                        </div>
-                        <div id="collapseMedium" class="collapse" aria-labelledby="headingMedium" data-parent="#divResults">
-                            <ul class="list-group">
-                                <li class="list-group-item">Cras justo odio</li>
-                                <li class="list-group-item">Dapibus ac facilisis in</li>
-                                <li class="list-group-item">Morbi leo risus</li>
-                                <li class="list-group-item">Porta ac consectetur ac</li>
-                                <li class="list-group-item">Vestibulum at eros</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header" id="headingLong">
-                            <h2 class="mb-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseLong" aria-expanded="false" aria-controls="collapseLong">
-                                    Long Jokes  <span class="badge badge-info">4</span>
-                                </button>
-                            </h2>
-                        </div>
-                        <div id="collapseLong" class="collapse" aria-labelledby="headingLong" data-parent="#divResults">
-                            <div class="list-group">
-                                <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
-                                <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
-                                <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
-                                <button type="button" class="list-group-item list-group-item-action" disabled>Vestibulum at eros</button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            var timeoutId = null;
+            var _getJoke = function () {
+                App.ServerGet('json', '/home/GetRandonJoke', null, function (response) {
+                    $('#jokeContainer').html(response.body);
+                });
+            }
+            var _searchJojes = function () {
+                $('#btnSearch > span:nth-child(1)').toggleClass('invisible');
+                $('#btnSearch > span:nth-child(2)').html('Searching ...');
+
+                App.ServerGet('html', '/home/SearchJokes?term=' + $('#txtSearchTerm').val(), null, function (response) {
+                    $('#btnSearch > span:nth-child(1)').toggleClass('invisible');
+                    $('#btnSearch > span:nth-child(2)').html('Search');
+
+                    if (response.trim().length == 0)
+                        $('#divResults').addClass('invisible');
+                    else
+                        $('#divResults').removeClass('invisible').html(response);
+                });
+            }
+            var _bindEvents = function () {
+                $('#btnOtherJoke').click(function (e) {
+                    e.preventDefault();
+                    _getJoke();
+                });
+                $('#chkAutoRefresh').click(function () {
+                    if ($(this).prop('checked'))
+                        timeoutId = setInterval(_getJoke, 10000);
+                    else {
+                        clearTimeout(timeoutId);
+                        timeoutId = null;
+                    }
+                })
+                $('#btnSearch').click(function (e) {
+                    e.preventDefault();
+                    _searchJojes();
+                });
+            }
+            _getJoke();
+            _bindEvents();
+        });
+    </script>
+}

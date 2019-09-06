@@ -11,6 +11,11 @@ namespace Degree.DadAdaptor
 {
     public class DadClient : IJokeProvider
     {
+        public DadClient()
+        {
+
+        }
+
         public async Task<DegreeJoke> GetRandomJoke()
         {
             var response = await GetClient().GetAsync(string.Empty);

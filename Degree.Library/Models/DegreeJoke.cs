@@ -9,8 +9,7 @@ namespace Degree.Library.Models
         Medium,
         Long
     }
-
-    [DataContract]
+    [Serializable]
     public class DegreeJoke
     {
         /// <summary>

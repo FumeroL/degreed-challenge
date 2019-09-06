@@ -49,9 +49,11 @@ namespace Degree.Logic
             if (!string.IsNullOrWhiteSpace(joke.Body))
             {
                 var words = joke.Body.Split(delimiters, StringSplitOptions.RemoveEmptyEntries).Length;
-                joke.TypeBySize = (words > 10 && words < 20)
-                    ? JokeSize.Medium
-                    : JokeSize.Long;
+                joke.TypeBySize = (words < 11)
+                    ? JokeSize.Short
+                    : (words > 10 && words < 20)
+                        ? JokeSize.Medium
+                        : JokeSize.Long;
             }
         }
     }
