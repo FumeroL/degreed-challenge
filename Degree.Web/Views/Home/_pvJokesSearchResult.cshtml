@@ -48,7 +48,8 @@
             <ul class="list-group">
                 @foreach (var joke in shortJokes)
                 {
-                    <li class="list-group-item">@joke.Body</li>
+                    <li class="list-group-item">@Html.Raw(joke.GetEmphatizedBody(this.Model.SearchTerm, "<code class=\"font-weight-bold\">{0}</code>"))</li>
+
                 }
             </ul>
         </div>
@@ -59,7 +60,7 @@
             <ul class="list-group">
                 @foreach (var joke in mediumJokes)
                 {
-                    <li class="list-group-item">@joke.Body</li>
+                    <li class="list-group-item">@Html.Raw(joke.GetEmphatizedBody(this.Model.SearchTerm, "<code class=\"font-weight-bold\">{0}</code>"))</li>
                 }
             </ul>
         </div>
@@ -70,7 +71,7 @@
             <ul class="list-group">
                 @foreach (var joke in longJokes)
                 {
-                    <li class="list-group-item">@joke.Body</li>
+                    <li class="list-group-item">@Html.Raw(joke.GetEmphatizedBody(this.Model.SearchTerm, "<code class=\"font-weight-bold\">{0}</code>"))</li>
                 }
             </ul>
         </div>
