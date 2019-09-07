@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "Degreed Joke Viewer";
+}
+<div class="row">
+    <div class="col-sm-4">
+        <div class="card border-dark">
+            <h5 class="card-header">Random Joke</h5>
+            <div class="card-body">
+                <div class="card-text" id="jokeContainer"></div>
+            </div>
+            <div class="card-footer btn-group-toggle text-right">
+                <button type="button" id="btnOtherJoke" class="btn btn-primary float-left">Other Joke</button>
+                <div class="form-check float-right">
+                    <input class="form-check-input" type="checkbox" id="chkAutoRefresh">
+                    <label class="form-check-label" for="chkAutoRefresh">Refresh automatically</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card border-dark mb-3">
+            <h5 class="card-header">Search for jokes</h5>
+            <div class="card-body">
+                <div class="input-group">
+                    <input id="txtSearchTerm" type="text" class="form-control" placeholder="Search term">
+                    <div class="input-group-append">
+                        <button id="btnSearch" type="button" class="btn btn-primary">
+                            <span class="spinner-border spinner-border-sm invisible" role="status" aria-hidden="true"></span>
+                            <span class="">Search</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="accordion mt-2 invisible" id="divResults">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            var timeoutId = null;
+            var _getJoke = function () {
+                App.ServerGet('json', '/home/GetRandonJoke', null, function (response) {
+                    $('#jokeContainer').html(response.body);
+                });
+            }
+            var _searchJojes = function () {
+                $('#btnSearch > span:nth-child(1)').toggleClass('invisible');
+                $('#btnSearch > span:nth-child(2)').html('Searching ...');
+
+                App.ServerGet('html', '/home/SearchJokes?term=' + $('#txtSearchTerm').val(), null, function (response) {
+                    $('#btnSearch > span:nth-child(1)').toggleClass('invisible');
+                    $('#btnSearch > span:nth-child(2)').html('Search');
+
+                    if (response.trim().length == 0)
+                        $('#divResults').addClass('invisible');
+                    else
+                        $('#divResults').removeClass('invisible').html(response);
+                });
+            }
+            var _bindEvents = function () {
+                $('#btnOtherJoke').click(function (e) {
+                    e.preventDefault();
+                    _getJoke();
+                });
+                $('#chkAutoRefresh').click(function () {
+                    if ($(this).prop('checked'))
+                        timeoutId = setInterval(_getJoke, 10000);
+                    else {
+                        clearTimeout(timeoutId);
+                        timeoutId = null;
+                    }
+                })
+                $('#btnSearch').click(function (e) {
+                    e.preventDefault();
+                    _searchJojes();
+                });
+            }
+            _getJoke();
+            _bindEvents();
+        });
+    </script>
+}
