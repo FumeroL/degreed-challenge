@@ -16,7 +16,7 @@ namespace Degreed.Logic
         /// Returns single random joke
         /// </summary>
         /// <returns>joke</returns>
-        public DegreeJoke GetNextJoke()
+        public DegreedJoke GetNextJoke()
             => provider.GetRandomJoke().Result;
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Degreed.Logic
             return result;
         }
 
-        private void CalculateJokeSize(DegreeJoke joke)
+        private void CalculateJokeSize(DegreedJoke joke)
         {
             joke.TypeBySize = JokeSize.Short; // by default
             if (!string.IsNullOrWhiteSpace(joke.Body))

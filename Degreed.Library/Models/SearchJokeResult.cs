@@ -8,7 +8,7 @@ namespace Degreed.Library.Models
     {
         public string SearchTerm { get; set; }
 
-        public List<DegreeJoke> Jokes { get; private set; } = new List<DegreeJoke>();
+        public List<DegreedJoke> Jokes { get; private set; } = new List<DegreedJoke>();
 
         public int PageSize { get; set; }
 

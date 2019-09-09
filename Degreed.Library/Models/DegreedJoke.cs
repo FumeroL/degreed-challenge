@@ -10,12 +10,12 @@ namespace Degreed.Library.Models
     }
 
     [Serializable]
-    public class DegreeJoke
+    public class DegreedJoke
     {
         /// <summary>
         /// Represents an empty Joke
         /// </summary>
-        public readonly static DegreeJoke Empty = new DegreeJoke { Id = string.Empty, Body = string.Empty };
+        public readonly static DegreedJoke Empty = new DegreedJoke { Id = string.Empty, Body = string.Empty };
 
         public string Id { get; set; }
 
@@ -24,7 +24,7 @@ namespace Degreed.Library.Models
         public JokeSize TypeBySize { get; set; } = JokeSize.Short;
 
         /// <summary>
-        /// Indicates if current instance refers to <see cref="DegreeJoke.Empty"/>
+        /// Indicates if current instance refers to <see cref="DegreedJoke.Empty"/>
         /// </summary>
         /// <returns></returns>
         public bool IsEmpty

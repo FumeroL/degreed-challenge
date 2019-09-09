@@ -9,7 +9,7 @@ namespace Degreed.Library.Services
         /// Returns single random joke
         /// </summary>
         /// <returns>joke</returns>
-        Task<DegreeJoke> GetRandomJoke();
+        Task<DegreedJoke> GetRandomJoke();
 
         /// <summary>
         /// Searchs for jokes matching a given text specifying page and page size to use

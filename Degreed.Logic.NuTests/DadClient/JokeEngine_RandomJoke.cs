@@ -31,7 +31,7 @@ namespace Tests
         [Test]
         public void GetRandomJokes()
         {
-            var jokes = new List<DegreeJoke>();
+            var jokes = new List<DegreedJoke>();
             for (int i = 0; i < 100; i++)
             {
                 var joke = engine.GetNextJoke();

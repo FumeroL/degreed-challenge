@@ -12,7 +12,7 @@ namespace Degreed.DadAdaptor
         [DataMember]
         public string Joke { get; set; }
 
-        public static explicit operator DegreeJoke(DadJoke d)
-            => new DegreeJoke { Body = d.Joke, Id = d.Id, TypeBySize = JokeSize.Short };
+        public static explicit operator DegreedJoke(DadJoke d)
+            => new DegreedJoke { Body = d.Joke, Id = d.Id, TypeBySize = JokeSize.Short };
     }
 }

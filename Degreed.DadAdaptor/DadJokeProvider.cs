@@ -14,7 +14,7 @@ namespace Degreed.DadAdaptor
         {
         }
 
-        public async Task<DegreeJoke> GetRandomJoke()
+        public async Task<DegreedJoke> GetRandomJoke()
         {
             var response = await GetClient().GetAsync(string.Empty);
             response.EnsureSuccessStatusCode();
@@ -23,9 +23,9 @@ namespace Degreed.DadAdaptor
             {
                 var joke = JsonConvert.DeserializeObject<DadJoke>(data);
                 if (joke != null)
-                    return (DegreeJoke)joke;
+                    return (DegreedJoke)joke;
             }
-            return DegreeJoke.Empty;
+            return DegreedJoke.Empty;
         }
 
         public async Task<SearchJokeResult> SearchJokes(string term, int page = 1, int pageSize = 10)
@@ -43,7 +43,7 @@ namespace Degreed.DadAdaptor
                 {
                     var result = new SearchJokeResult { PageSize = clientResult.Limit, SearchTerm = term, TotalJokes = clientResult.TotalJokes, TotalPages = clientResult.TotalPages };
                     if (clientResult.Jokes?.Count > 0)
-                        clientResult.Jokes.ForEach(j => result.Jokes.Add((DegreeJoke)j));
+                        clientResult.Jokes.ForEach(j => result.Jokes.Add((DegreedJoke)j));
                     return result;
                 }
             }
